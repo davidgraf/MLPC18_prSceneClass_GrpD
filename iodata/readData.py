@@ -7,19 +7,51 @@ parameter:
 
 import numpy as np
 import sklearn as sk
+import json
+import os
 
-file_path = '/Users/Florian/Documents/DCASE2017_development_set/mfcc_numpy'
+#Merge each scene into one big data matrix =>
+def appendData():
+    data = readData('/Users/Florian/Documents/DCASE2017_development_set/mfcc_numpy')
+    whole_data = None
+    i = 0
+    for file_ID in data:
+        i = i + 1
+        print(data[file_ID].shape)
+        print(i)
+        if whole_data is None:
+            whole_data = data[file_ID]
+        else:
+            whole_data = np.append(whole_data, data[file_ID], axis=1)
+
+    print(whole_data.shape)
 
 def readData(path):
-    meta = np.loadtxt('meta.txt', dtype={'names': ('filename', 'label', 'labelID'),
+    meta_data = np.loadtxt('data/meta.txt', dtype={'names': ('fileID', 'label', 'labelID'),
                                          'formats': ('S100', 'S100', 'S100')}, delimiter='\t')
-    print(meta[0]['label'])
-    # ... read features and labels from files and return data structure (already split to 4-folds?)
-    #data = np.load(file_path & '/mfcc_numpy/a001_0_10.npy')
-    #print(data)
-    #data1 = np.load('/Volumes/GoogleDrive/My Drive/WinStudium/MSc/ Machine Learning and Pattern Classification/DCASE2017_development_set/mfcc_numpy/a001_10_20.npy')
-    #print(data1)
-    return None
+    print(meta_data)
+    data = {}
+    whole_json_file = path + '/whole.npy'
+
+    # if (os.path.exists(whole_json_file)):
+    #     return np.load(whole_json_file).item()
+
+    for item in meta_data:
+        file_ID = item['fileID'].replace('audio/', '').replace('.wav', '')
+        file_path = path + '/' + file_ID + '.npy'
+        # label = item['label']
+        # if label not in data:
+        #     data[label] = {}
+
+        print('Process file:' + file_path)
+        #data[label][file_ID] = np.load(file_path)
+        data[file_ID] = np.load(file_path)
 
 
+    # print('Save file to:' + whole_json_file)
+    # np.save(whole_json_file, data)
+
+    return data
+
+#appendData()
 readData('/Users/Florian/Documents/DCASE2017_development_set/mfcc_numpy')
