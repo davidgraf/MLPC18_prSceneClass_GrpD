@@ -8,10 +8,10 @@ parameter:
 DATA_DIR = "C:/Temp/DCASE2017_development_set"
 
 # imports
-from iodata.readData import readData
+from iodata.readData import read_data_files
 
 # read data
-data = readData(DATA_DIR)
+data = read_data_files(DATA_DIR)
 
 # data analysis
 # ... analysis(data)
