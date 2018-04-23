@@ -20,13 +20,11 @@ data = read_data_files(DATA_DIR)
 # ...
 
 # training
-# ...
+model, meanCrossVal = trainModel(featuresTrain, labelsTrain)
 
 # testing
-# ...
+accuracy, precision, recall, f1 = testModel(model, featuresTest, labelsTest)
 
-# evaluating
-# ...
 
 
 
