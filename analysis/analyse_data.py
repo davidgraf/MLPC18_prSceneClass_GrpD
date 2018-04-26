@@ -31,6 +31,7 @@ def merge_data():
 
     return matrix
 
+
 def read_data_files(path):
     meta_data = np.loadtxt('../iodata/data/meta.txt', dtype={'names': ('fileID', 'label', 'labelID'),
                                          'formats': ('S100', 'S100', 'S100')}, delimiter='\t')
@@ -47,7 +48,10 @@ def read_data_files(path):
         print('Process file:' + file_path)
         data[file_ID] = np.load(file_path)
 
+    np.save(whole_json_file, data)
+
     return data
+
 
 def print_correlation_matrix_merged_data(merged_matrix):
 
@@ -60,6 +64,7 @@ def print_correlation_matrix_merged_data(merged_matrix):
     ax.set_aspect("equal")
     #plt.show()
     np.savetxt('Correlation_Table.csv', corr_matrix, fmt='%.2f', delimiter=';')
+
 
 def print_Description(merged_matrix):
     file_name = 'Descriptions.csv'
@@ -106,6 +111,6 @@ def print_boxplots(merged_matrix):
 #readData('/Users/Florian/Documents/DCASE2017_development_set/mfcc_numpy')
 
 merged_matrix = merge_data()
-print_correlation_matrix_merged_data(merged_matrix)
+#print_correlation_matrix_merged_data(merged_matrix)
 print_Description(merged_matrix)
 #print_boxplots(merged_matrix)
