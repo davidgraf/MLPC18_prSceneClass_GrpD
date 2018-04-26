@@ -23,6 +23,8 @@ def test(readFolds, cnt):
             print(n)
             gnb.fit(n, l)
 
+#foldName= 'fold1' or 'fold2' or 'fold3' or 'fold4'
+#foldtype= 'train' or 'test' or 'evaluate'
 def readFold(foldName, foldtype):
     #data_fold_dict_file = 'data_fold_dict.npy'
     #
@@ -43,7 +45,7 @@ def readFold(foldName, foldtype):
 
     foldData = np.empty([(len(meta_data) * 501), cols],
                         dtype='S100')
-    cnt = collections.Counter([i for j in meta_data for i in j])        #gives us the number of occurrences for each label
+    #cnt = collections.Counter([i for j in meta_data for i in j])        #gives us the number of occurrences for each label
 
     offset = 0
     for item in meta_data:          #for each label
