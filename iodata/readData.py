@@ -31,8 +31,8 @@ def readFold(foldName, foldtype):
     # if (os.path.exists('data/' + data_fold_dict_file)):
     #     return np.load('data/' + data_fold_dict_file).item()
 
-    data_path = 'data/mfcc_numpy'
-    fold_path = 'data/evaluation_setup'
+    data_path = os.getcwd() + '/iodata/data/mfcc_numpy'
+    fold_path = os.getcwd() + '/iodata/data/evaluation_setup'
     fold_data_dict = {}
     print("reading from: " + fold_path +'/' + foldName + '_' + foldtype + '.txt')
     cols = 61
@@ -73,5 +73,5 @@ def readFold(foldName, foldtype):
     #print('done')
     return foldData
 
-data = readFold('fold1', 'train')
-print(data)
+#data = readFold('fold1', 'train')
+#print(data)

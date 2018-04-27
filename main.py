@@ -8,10 +8,10 @@ parameter:
 DATA_DIR = "C:/Temp/DCASE2017_development_set"
 
 # imports
-from iodata.readData import read_data_files
+from iodata.readData import readFold
 
 # read data
-data = read_data_files(DATA_DIR)
+data = readFold('fold1', 'train')
 
 # data analysis
 # ... analysis(data)
@@ -20,10 +20,10 @@ data = read_data_files(DATA_DIR)
 # ...
 
 # training
-model, meanCrossVal = trainModel(featuresTrain, labelsTrain)
+#model, meanCrossVal = trainModel(featuresTrain, labelsTrain)
 
 # testing
-accuracy, precision, recall, f1 = testModel(model, featuresTest, labelsTest)
+#accuracy, precision, recall, f1 = testModel(model, featuresTest, labelsTest)
 
 
 
