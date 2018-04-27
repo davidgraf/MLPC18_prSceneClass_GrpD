@@ -7,6 +7,7 @@ parameter:
 
 import os
 import numpy as np
+import random
 import collections
 from sklearn.naive_bayes import GaussianNB
 from array import array
@@ -25,7 +26,7 @@ def test(readFolds, cnt):
 
 #foldName= 'fold1' or 'fold2' or 'fold3' or 'fold4'
 #foldtype= 'train' or 'test' or 'evaluate'
-def readFold(foldName, foldtype):
+def readFold(foldName, foldtype, samplerate):
     #data_fold_dict_file = 'data_fold_dict.npy'
     #
     # if (os.path.exists('data/' + data_fold_dict_file)):
@@ -43,7 +44,7 @@ def readFold(foldName, foldtype):
         meta_data = np.loadtxt(fold_path +'/' + foldName + '_' + foldtype + '.txt', dtype={'names': ('fileID', 'label'),
                                                                         'formats': ('S100', 'S100')}, delimiter='\t')
 
-    foldData = np.empty([(len(meta_data) * 501), cols],
+    foldData = np.empty([(len(meta_data) * int(501 * samplerate)), cols],
                         dtype='S100')
     #cnt = collections.Counter([i for j in meta_data for i in j])        #gives us the number of occurrences for each label
 
@@ -60,8 +61,12 @@ def readFold(foldName, foldtype):
         matrix = np.concatenate((matrix, [[label]]* len(matrix)), axis=1) if cols == 61 else matrix
             #.append(matrix, [[label]]* len(matrix), axis=1) if cols == 61 else matrix
 
-        foldData[offset:(offset + 501), 0:cols] = matrix
-        offset = offset + 501
+        # sample according samplerate
+        sampleIndexList = random.sample(range(0, 500), int(501 * samplerate))
+        matrix = matrix[sampleIndexList, :]
+
+        foldData[offset:(offset + int(501 * samplerate)), 0:cols] = matrix
+        offset = offset + int(501 * samplerate)
 
     #fold_data_dict[foldName + '_' + foldtype] = foldData
     #print('saving to ' + 'data/folds/' + f + '_' + foldtype)
