@@ -14,7 +14,7 @@ parameter:
 CLASSIFIER = 'SVM'
 
 # for sampling 0.1 means only 10%
-SAMPLERATE = 0.01
+SAMPLERATE = 0.1
 
 # ----------------------
 
@@ -26,17 +26,20 @@ from processing.featureScaling import featureScale
 
 
 # read training data
-traindata = readFold('fold1', 'train', SAMPLERATE)
+traindata_feature, traindata_labels = readFold('fold1', 'train', SAMPLERATE)
 
 # read test data
-testdata = readFold('fold1', 'evaluate', SAMPLERATE)
+testdata_feature, testdata_labels = readFold('fold1', 'evaluate', SAMPLERATE)
 
 # split feature matrix and labels
-featureMatrixTrain = featureScale(traindata[...,:60])
-labelsTrain = traindata[...,60:].ravel()
+#featureMatrixTrain = featureScale(traindata[...,:60])
+featureMatrixTrain = featureScale(traindata_feature)
+#labelsTrain = traindata[...,60:].ravel()
+labelsTrain = traindata_labels.ravel()
 
-featureMatrixTest = featureScale(testdata[...,:60])
-labelsTest = testdata[...,60:].ravel()
+#featureMatrixTest = featureScale(testdata[...,:60])
+featureMatrixTest = testdata_feature
+labelsTest = testdata_labels.ravel()
 
 # data analysis
 # ... analysis(data)
