@@ -14,7 +14,7 @@ parameter:
 CLASSIFIER = 'SVM'
 
 # for sampling 0.1 means only 10%
-SAMPLERATE = 0.1
+SAMPLERATE = 0.01
 
 # ----------------------
 
@@ -38,7 +38,7 @@ featureMatrixTrain = featureScale(traindata_feature)
 labelsTrain = traindata_labels.ravel()
 
 #featureMatrixTest = featureScale(testdata[...,:60])
-featureMatrixTest = testdata_feature
+featureMatrixTest = featureScale(testdata_feature)
 labelsTest = testdata_labels.ravel()
 
 # data analysis
