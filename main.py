@@ -21,6 +21,8 @@ SAMPLERATE = 0.01
 # imports
 from iodata.readData import readFold
 from learning.classification import trainModel, testModel
+from processing.featureEvaluation import featureClassCoerr
+from processing.featureScaling import featureScale
 
 
 # read training data
@@ -30,17 +32,17 @@ traindata = readFold('fold1', 'train', SAMPLERATE)
 testdata = readFold('fold1', 'evaluate', SAMPLERATE)
 
 # split feature matrix and labels
-featureMatrixTrain = traindata[...,:60]
+featureMatrixTrain = featureScale(traindata[...,:60])
 labelsTrain = traindata[...,60:].ravel()
 
-featureMatrixTest = testdata[...,:60]
+featureMatrixTest = featureScale(testdata[...,:60])
 labelsTest = testdata[...,60:].ravel()
 
 # data analysis
 # ... analysis(data)
 
 # preprocssing (feature scaling, feature evaluation, feature selection)
-# ...
+featureClassCoerr(featureMatrixTrain,labelsTrain,range(0,60))
 
 # training
 model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, CLASSIFIER)
