@@ -57,10 +57,10 @@ for i in range(4):              #4 folds
     #featureClassCoerr(featureMatrixTrain, labelsTrain, range(0,60))
 
 # training
-    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'SVM')
+    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'NaiveBayes')
 
 # testing
-    accuracy, precision, recall, f1 = testModel(model, featureMatrixTest, labelsTest)
+    accuracy, precision, recall, f1 = testModel(model, featureMatrixTest[0], labelsTest)
     overallAccuracy += accuracy
 
 print(overallAccuracy/4)
