@@ -17,4 +17,4 @@ def featureScale (featureMatrix):
     # minmaxScaler = pp.MinMaxScaler(copy=True, feature_range=(0, 1)).fit(featureMatrix)
     # featureMatrixScaled = minmaxScaler.transform(featureMatrix)
 
-    return featureMatrixScaled
+    return featureMatrixScaled, stdScaler
