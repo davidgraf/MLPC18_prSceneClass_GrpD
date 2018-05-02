@@ -35,17 +35,16 @@ for i in range(4):              #4 folds
     #3 training folds
 
     trainData[0].feature_matrix_train = featureScale(folds[i].features)
-    trainData[1].labels_train= folds[i].labels.ravel()
+    trainData[0].labels_train= folds[i].labels.ravel()
     trainData[1].feature_matrix_train = featureScale(folds[(i+1)%4].features)
     trainData[1].labels_train = folds[(i+1)%4].labels.ravel()
     trainData[2].feature_matrix_train = featureScale(folds[(i+2)%4].features)
     trainData[2].labels_train = folds[(i+2)%4].labels.ravel()
 
-    featureMatrixTrain = np.append(trainData[0].feature_matrix_train, trainData[1].feature_matrix_train)
-    featureMatrixTrain = np.append(featureMatrixTrain, trainData[2].feature_matrix_train)
-
-    labelsTrain = np.append(trainData[0].labels_train, trainData[1].labels_train)
-    labelsTrain = np.append(labelsTrain, trainData[2].labels_train)
+    featureMatrixTrain = np.append(trainData[0].feature_matrix_train[0], trainData[1].feature_matrix_train[0], axis = 0)
+    featureMatrixTrain = np.append(featureMatrixTrain, trainData[2].feature_matrix_train[0], axis = 0)
+    labelsTrain = np.append(trainData[0].labels_train, trainData[1].labels_train, axis=0)
+    labelsTrain = np.append(labelsTrain, trainData[2].labels_train, axis=0)
 
     #1 evaluation fold
 
