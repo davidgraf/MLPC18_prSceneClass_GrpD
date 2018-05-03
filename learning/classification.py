@@ -22,7 +22,7 @@ def SVMclassifierTrain(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None # scores.mean()
 
 
 def classifierPredict(featureMatrix, model):
@@ -37,7 +37,7 @@ def DecisionTreeTrain(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None #scores.mean()
 
 
 def GaussianProcessTrain(featureMatrix, labelMatrix):
@@ -48,7 +48,7 @@ def GaussianProcessTrain(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None #scores.mean()
 
 def GaussianNaiveBayes(featureMatrix, labelMatrix):
     clf = GaussianNB()
@@ -58,7 +58,7 @@ def GaussianNaiveBayes(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None #scores.mean()
 
 
 def AdaBoostTrain(featureMatrix, labelMatrix):
@@ -69,7 +69,7 @@ def AdaBoostTrain(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None #scores.mean()
 
 
 def RandomForestTrain(featureMatrix, labelMatrix):
@@ -80,7 +80,7 @@ def RandomForestTrain(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None #scores.mean()
 
 
 def NeuroNetTrain(featureMatrix, labelMatrix):
@@ -91,7 +91,7 @@ def NeuroNetTrain(featureMatrix, labelMatrix):
     #scores = cross_val_score(clf, featureMatrix, labelMatrix, cv=5)
     #print("Accuracy (Cross-V): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-    return clf, scores.mean()
+    return clf, None #scores.mean()
 
 def trainModel(features, labels, classifier):
     # train classifier and apply cross validation
