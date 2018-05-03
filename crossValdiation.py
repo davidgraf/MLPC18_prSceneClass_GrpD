@@ -3,10 +3,12 @@ import numpy as np
 from learning.classification import trainModel, testModel
 from processing.featureEvaluation import featureClassCoerr
 from processing.featureScaling import featureScale
+import time
+
 
 folds = []
 
-SAMPLERATE = 0.01
+SAMPLERATE = 0.1
 overallAccuracy = 0
 
 
@@ -27,6 +29,7 @@ folds[1].features, folds[1].labels = readFold("fold2", "train", SAMPLERATE)
 folds[2].features, folds[2].labels = readFold("fold3", "train", SAMPLERATE)
 folds[3].features, folds[3].labels = readFold("fold4", "evaluate", SAMPLERATE)
 
+timeStart = time.time()
 
 for i in range(4):              #4 folds
 
@@ -57,10 +60,12 @@ for i in range(4):              #4 folds
     #featureClassCoerr(featureMatrixTrain, labelsTrain, range(0,60))
 
 # training
-    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'NaiveBayes')
+    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'RandomForest')
 
 # testing
     accuracy, precision, recall, f1 = testModel(model, featureMatrixTest[0], labelsTest)
     overallAccuracy += accuracy
 
 print(overallAccuracy/4)
+
+print "Train/Prediction Time (sec.)",(time.time()-timeStart)

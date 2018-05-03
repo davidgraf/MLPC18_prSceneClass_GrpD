@@ -32,8 +32,11 @@ traindata_feature, traindata_labels = readFold('fold1', 'train', SAMPLERATE)
 # read test data
 testdata_feature, testdata_labels = readFold('fold1', 'evaluate', SAMPLERATE)
 
+# preprocssing (feature scaling, feature evaluation, feature selection)
+# featureClassCoerr(featureMatrixTrain,labelsTrain,range(0,60))
+
 # scale train data
-featureMatrixTrain, scaler = featureScale(traindata_feature)
+featureMatrixTrain, scaler = featureScale(traindata_feature[:])
 labelsTrain = traindata_labels
 
 # scale test data according train values
@@ -42,9 +45,6 @@ labelsTest = testdata_labels
 
 # data analysis
 # ... analysis(data)
-
-# preprocssing (feature scaling, feature evaluation, feature selection)
-# featureClassCoerr(featureMatrixTrain,labelsTrain,range(0,60))
 
 timeStart = time.time()
 
