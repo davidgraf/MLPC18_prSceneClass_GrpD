@@ -84,7 +84,7 @@ def RandomForestTrain(featureMatrix, labelMatrix):
 
 
 def NeuroNetTrain(featureMatrix, labelMatrix):
-    clf = MLPClassifier(solver='adam', max_iter=400, hidden_layer_sizes=(25, 2))
+    clf = MLPClassifier(solver='adam', max_iter=400, hidden_layer_sizes=(100,))
     print clf.fit(featureMatrix, labelMatrix)
 
     # cross validation

@@ -11,10 +11,10 @@ parameter:
 #DATA_DIR = "C:/Temp/DCASE2017_development_set"
 
 # 'SVM' or 'DecisionTree' or 'RandomForest' or 'GaussianProcess' or 'AdaBoost' or 'NeuroNet' or 'NaiveBayes'
-CLASSIFIER = 'AdaBoost'
+CLASSIFIER = 'NaiveBayes'
 
 # for sampling 0.1 means only 10%
-SAMPLERATE = 0.1
+SAMPLERATE = 0.01
 
 # ----------------------
 

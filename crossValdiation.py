@@ -27,7 +27,13 @@ folds = [Fold() for j in range (4)]
 folds[0].features, folds[0].labels = readFold("fold1", "train", SAMPLERATE)
 folds[1].features, folds[1].labels = readFold("fold2", "train", SAMPLERATE)
 folds[2].features, folds[2].labels = readFold("fold3", "train", SAMPLERATE)
-folds[3].features, folds[3].labels = readFold("fold4", "evaluate", SAMPLERATE)
+folds[3].features, folds[3].labels = readFold("fold4", "train", SAMPLERATE)
+
+eval_folds = [Fold() for j in range(4)]
+eval_folds[0].features, eval_folds[0].labels = readFold("fold1", "evaluate", SAMPLERATE)
+eval_folds[1].features, eval_folds[1].labels = readFold("fold2", "evaluate", SAMPLERATE)
+eval_folds[2].features, eval_folds[2].labels = readFold("fold3", "evaluate", SAMPLERATE)
+eval_folds[3].features, eval_folds[3].labels = readFold("fold4", "evaluate", SAMPLERATE)
 
 timeStart = time.time()
 
@@ -51,8 +57,8 @@ for i in range(4):              #4 folds
 
     #1 evaluation fold
 
-    e_features = folds[(i+3)%4].features
-    e_labels = folds[(i+3)%4].labels
+    e_features = eval_folds[(i+3)%4].features
+    e_labels = eval_folds[(i+3)%4].labels
 
     featureMatrixTest = featureScale(e_features)
     labelsTest = e_labels.ravel()
@@ -60,7 +66,7 @@ for i in range(4):              #4 folds
     #featureClassCoerr(featureMatrixTrain, labelsTrain, range(0,60))
 
 # training
-    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'RandomForest')
+    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'NaiveBayes')
 
 # testing
     accuracy, precision, recall, f1 = testModel(model, featureMatrixTest[0], labelsTest)

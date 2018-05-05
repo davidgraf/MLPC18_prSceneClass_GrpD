@@ -49,7 +49,7 @@ def readFold(foldName, foldtype, samplerate):
         file_path = str(file_ID) + ".npy"
 
         label = item['label'] if not (foldtype == 'test') else ''
-        print('reading:' + str(file_ID_full) + ' - ' + str(label))
+        #print('reading:' + str(file_ID_full) + ' - ' + str(label))
 
         matrix_tmp = np.load(str(data_path)+'/'+str(file_path)).transpose().astype(str)
         # sample according samplerate
