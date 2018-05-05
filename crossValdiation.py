@@ -35,43 +35,119 @@ eval_folds[1].features, eval_folds[1].labels = readFold("fold2", "evaluate", SAM
 eval_folds[2].features, eval_folds[2].labels = readFold("fold3", "evaluate", SAMPLERATE)
 eval_folds[3].features, eval_folds[3].labels = readFold("fold4", "evaluate", SAMPLERATE)
 
-timeStart = time.time()
+settings = {
+    # 'RandomForest':[
+    #     {
+    #         'n_estimators': 10,
+    #         'criterion': 'entropy'
+    #     },
+    #     {
+    #         'n_estimators': 1,
+    #         'criterion': 'entropy'
+    #     },
+    #     {
+    #         'n_estimators': 5,
+    #         'criterion': 'entropy'
+    #     },
+    #     {
+    #         'n_estimators': 20,
+    #         'criterion': 'entropy'
+    #     },
+    #     {
+    #         'n_estimators': 20,
+    #         'criterion': 'gini'
+    #     },
+    #     {
+    #         'n_estimators': 30,
+    #         'criterion': 'gini'
+    #     },
+    # ],
+    'SVM': [
+        {
+            'kernel': 'rbf',
+        },
+        {
+            'kernel': 'linear',
+        },
+        {
+            'kernel': 'poly',
+        },
+        {
+            'kernel': 'rbf',
+        },
+        {
+            'kernel': 'sigmoid',
+        },
+        {
+            'kernel': 'precomputed',
+        },
+    ],
+    # 'NeuroNet':[
+    #     {
+    #         'hidden_layer_sizes': (100,),
+    #         'solver': 'adam',
+    #         'learning_rate_init': 0.001
+    #     },
+    #     {
+    #         'hidden_layer_sizes': (1,),
+    #         'solver': 'adam',
+    #         'learning_rate_init': 0.001
+    #     },
+    #     {
+    #         'hidden_layer_sizes': (10,),
+    #         'solver': 'adam',
+    #         'learning_rate_init': 0.001
+    #     },
+    #     {
+    #         'hidden_layer_sizes': (1000,),
+    #         'solver': 'adam',
+    #         'learning_rate_init': 0.001
+    #     },
+    # ]
 
-for i in range(4):              #4 folds
+}
+for classifier in settings.keys():
+    print('************************************' + classifier + '************************************')
+    for setting in settings[classifier]:
+        print('********NewSetting********')
+        print('Settings: ' + str(setting))
+        overallAccuracy = 0
+        timeStart = time.time()
+        for i in range(4):              #4 folds
 
-    trainData = [FoldData() for j in range (3)]
+            trainData = [FoldData() for j in range (3)]
 
-    #3 training folds
+            #3 training folds
 
-    trainData[0].feature_matrix_train = featureScale(folds[i].features)
-    trainData[0].labels_train= folds[i].labels.ravel()
-    trainData[1].feature_matrix_train = featureScale(folds[(i+1)%4].features)
-    trainData[1].labels_train = folds[(i+1)%4].labels.ravel()
-    trainData[2].feature_matrix_train = featureScale(folds[(i+2)%4].features)
-    trainData[2].labels_train = folds[(i+2)%4].labels.ravel()
+            trainData[0].feature_matrix_train = featureScale(folds[i].features)
+            trainData[0].labels_train= folds[i].labels.ravel()
+            trainData[1].feature_matrix_train = featureScale(folds[(i+1)%4].features)
+            trainData[1].labels_train = folds[(i+1)%4].labels.ravel()
+            trainData[2].feature_matrix_train = featureScale(folds[(i+2)%4].features)
+            trainData[2].labels_train = folds[(i+2)%4].labels.ravel()
 
-    featureMatrixTrain = np.append(trainData[0].feature_matrix_train[0], trainData[1].feature_matrix_train[0], axis = 0)
-    featureMatrixTrain = np.append(featureMatrixTrain, trainData[2].feature_matrix_train[0], axis = 0)
-    labelsTrain = np.append(trainData[0].labels_train, trainData[1].labels_train, axis=0)
-    labelsTrain = np.append(labelsTrain, trainData[2].labels_train, axis=0)
+            featureMatrixTrain = np.append(trainData[0].feature_matrix_train[0], trainData[1].feature_matrix_train[0], axis = 0)
+            featureMatrixTrain = np.append(featureMatrixTrain, trainData[2].feature_matrix_train[0], axis = 0)
+            labelsTrain = np.append(trainData[0].labels_train, trainData[1].labels_train, axis=0)
+            labelsTrain = np.append(labelsTrain, trainData[2].labels_train, axis=0)
 
-    #1 evaluation fold
+            #1 evaluation fold
 
-    e_features = eval_folds[(i+3)%4].features
-    e_labels = eval_folds[(i+3)%4].labels
+            e_features = eval_folds[(i+3)%4].features
+            e_labels = eval_folds[(i+3)%4].labels
 
-    featureMatrixTest = featureScale(e_features)
-    labelsTest = e_labels.ravel()
+            featureMatrixTest = featureScale(e_features)
+            labelsTest = e_labels.ravel()
 
-    #featureClassCoerr(featureMatrixTrain, labelsTrain, range(0,60))
+            #featureClassCoerr(featureMatrixTrain, labelsTrain, range(0,60))
 
-# training
-    model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, 'NaiveBayes')
+        # training
+            model, meanCrossVal = trainModel(featureMatrixTrain, labelsTrain, classifier, setting)
 
-# testing
-    accuracy, precision, recall, f1 = testModel(model, featureMatrixTest[0], labelsTest)
-    overallAccuracy += accuracy
+        # testing
+            accuracy, precision, recall, f1 = testModel(model, featureMatrixTest[0], labelsTest)
+            overallAccuracy += accuracy
 
-print(overallAccuracy/4)
+        print(overallAccuracy/4)
 
-print "Train/Prediction Time (sec.)",(time.time()-timeStart)
+        print "Train/Prediction Time (sec.)",(time.time()-timeStart)

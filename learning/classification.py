@@ -14,8 +14,8 @@ from sklearn.neural_network import MLPClassifier
 import sklearn.metrics as scikitm
 
 
-def SVMclassifierTrain(featureMatrix, labelMatrix):
-    clf = svm.SVC()
+def SVMclassifierTrain(featureMatrix, labelMatrix, setting={}):
+    clf = svm.SVC(**setting)
     print clf.fit(featureMatrix, labelMatrix)
 
     # cross validation
@@ -72,8 +72,9 @@ def AdaBoostTrain(featureMatrix, labelMatrix):
     return clf, None #scores.mean()
 
 
-def RandomForestTrain(featureMatrix, labelMatrix):
-    clf = ensemble.RandomForestClassifier(criterion="entropy")
+def RandomForestTrain(featureMatrix, labelMatrix, setting={}):
+    clf = ensemble.RandomForestClassifier(**setting)
+    #clf = ensemble.RandomForestClassifier(criterion="entropy", n_estimators=10)
     print clf.fit(featureMatrix, labelMatrix)
 
     # cross validation
@@ -83,8 +84,9 @@ def RandomForestTrain(featureMatrix, labelMatrix):
     return clf, None #scores.mean()
 
 
-def NeuroNetTrain(featureMatrix, labelMatrix):
-    clf = MLPClassifier(solver='adam', max_iter=400, hidden_layer_sizes=(100,))
+def NeuroNetTrain(featureMatrix, labelMatrix, setting={}):
+
+    clf = MLPClassifier(max_iter=400, **setting)
     print clf.fit(featureMatrix, labelMatrix)
 
     # cross validation
@@ -93,24 +95,24 @@ def NeuroNetTrain(featureMatrix, labelMatrix):
 
     return clf, None #scores.mean()
 
-def trainModel(features, labels, classifier):
+def trainModel(features, labels, classifier, setting={}):
     # train classifier and apply cross validation
     print "------------------------- Train classifier -------------------------"
 
     if classifier == 'SVM':
-        model, meanScore = SVMclassifierTrain(features, labels)
+        model, meanScore = SVMclassifierTrain(features, labels, setting)
     elif classifier == 'DecisionTree':
         model, meanScore = DecisionTreeTrain(features, labels)
     elif classifier == 'RandomForest':
-        model, meanScore = RandomForestTrain(features, labels)
+        model, meanScore = RandomForestTrain(features, labels, setting)
     elif classifier == 'GaussianProcess':
         model, meanScore = GaussianProcessTrain(features, labels)
     elif classifier == 'NaiveBayes':
         model, meanScore = GaussianNaiveBayes(features, labels)
     elif classifier == 'AdaBoost':
-        model, meanScore = AdaBoostTrain(features, labels)
+        model, meanScore = AdaBoostTrain(features, labels, setting)
     elif classifier == 'NeuroNet':
-        model, meanScore = NeuroNetTrain(features, labels)
+        model, meanScore = NeuroNetTrain(features, labels, setting)
     else:
         print "No available classifier selected - please choose classification algorithm!"
 
