@@ -62,48 +62,71 @@ settings = {
     #         'criterion': 'gini'
     #     },
     # ],
-    'SVM': [
+    # 'SVM': [
+    #     {
+    #         'kernel': 'rbf',
+    #     },
+    #     {
+    #         'kernel': 'linear',
+    #     },
+    #     {
+    #         'kernel': 'poly',
+    #     },
+    #     {
+    #         'kernel': 'rbf',
+    #     },
+    #     {
+    #         'kernel': 'sigmoid',
+    #     },
+    #     {
+    #         'kernel': 'precomputed',
+    #     },
+    # ],
+    'AdaBoost':[
         {
-            'kernel': 'rbf',
+            'n_estimators': 50,
+            'learning_rate': 1.0
         },
         {
-            'kernel': 'linear',
+            'n_estimators': 1,
+            'learning_rate': 1.0
         },
         {
-            'kernel': 'poly',
+            'n_estimators': 500,
+            'learning_rate': 1.0
         },
         {
-            'kernel': 'rbf',
-        },
-        {
-            'kernel': 'sigmoid',
-        },
-        {
-            'kernel': 'precomputed',
+            'n_estimators': 50,
+            'learning_rate': 10.0
         },
     ],
-    # 'NeuroNet':[
-    #     {
-    #         'hidden_layer_sizes': (100,),
-    #         'solver': 'adam',
-    #         'learning_rate_init': 0.001
-    #     },
-    #     {
-    #         'hidden_layer_sizes': (1,),
-    #         'solver': 'adam',
-    #         'learning_rate_init': 0.001
-    #     },
-    #     {
-    #         'hidden_layer_sizes': (10,),
-    #         'solver': 'adam',
-    #         'learning_rate_init': 0.001
-    #     },
-    #     {
-    #         'hidden_layer_sizes': (1000,),
-    #         'solver': 'adam',
-    #         'learning_rate_init': 0.001
-    #     },
-    # ]
+    #'NeuroNet':[
+        # {
+        #     'hidden_layer_sizes': (100,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.0001
+        # },
+        # {
+        #     'hidden_layer_sizes': (10,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.01
+        # },
+        # {
+        #     'hidden_layer_sizes': (1,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.001
+        # },
+        # {
+        #     'hidden_layer_sizes': (10,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.001
+        # },
+        # {
+        #     'hidden_layer_sizes': (1000,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.001
+        # },
+    #]
 
 }
 for classifier in settings.keys():

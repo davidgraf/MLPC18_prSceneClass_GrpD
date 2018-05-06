@@ -70,7 +70,7 @@ def print_Description(merged_matrix):
     file_name = 'Descriptions.csv'
 
     with open(file_name, 'w') as f:
-        f.write('Feature; nobs; min; max; mean; variance; skeweness; kurtosis; median; Q1; median; Q3')
+        f.write('Feature; nobs; min; max; mean; variance; skeweness; kurtosis; median; Q1; Q3')
         f.write('\n')
 
     for row in range(0, len(merged_matrix)):

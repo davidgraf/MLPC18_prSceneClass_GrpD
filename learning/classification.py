@@ -61,8 +61,8 @@ def GaussianNaiveBayes(featureMatrix, labelMatrix):
     return clf, None #scores.mean()
 
 
-def AdaBoostTrain(featureMatrix, labelMatrix):
-    clf = ensemble.AdaBoostClassifier()
+def AdaBoostTrain(featureMatrix, labelMatrix, setting={}):
+    clf = ensemble.AdaBoostClassifier(**setting)
     print clf.fit(featureMatrix, labelMatrix)
 
     # cross validation
