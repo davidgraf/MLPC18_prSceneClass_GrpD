@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 #Merge each scene into one big data matrix =>
 def merge_data():
-    data = read_data_files('/Users/Florian/Documents/DCASE2017_development_set/mfcc_numpy')
+    data = read_data_files('../iodata/data/mfcc_numpy')
     whole_data = None
     i = 0
     cols = len(data.keys()*501)
@@ -70,7 +70,7 @@ def print_Description(merged_matrix):
     file_name = 'Descriptions.csv'
 
     with open(file_name, 'w') as f:
-        f.write('Feature; nobs; min; max; mean; variance; skeweness; kurtosis; median; Q1; Q3')
+        f.write('Feature; nobs; min; max; mean; variance; skeweness; kurtosis; median; Q1; median; Q3')
         f.write('\n')
 
     for row in range(0, len(merged_matrix)):
@@ -84,7 +84,8 @@ def print_Description(merged_matrix):
 
             print(str(quantile_arr))
 
-            line = line + '; '.join([str(quantile) for quantile in quantile_arr])
+            line = line + ';' + '; '.join([str(quantile) for quantile in quantile_arr])
+            print(line)
             line = line.replace('.', ',')
             f.write(line)
             f.write('\n')

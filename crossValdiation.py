@@ -82,24 +82,24 @@ settings = {
     #         'kernel': 'precomputed',
     #     },
     # ],
-    'AdaBoost':[
-        {
-            'n_estimators': 50,
-            'learning_rate': 1.0
-        },
-        {
-            'n_estimators': 1,
-            'learning_rate': 1.0
-        },
-        {
-            'n_estimators': 500,
-            'learning_rate': 1.0
-        },
-        {
-            'n_estimators': 50,
-            'learning_rate': 10.0
-        },
-    ],
+    # 'AdaBoost':[
+    #     {
+    #         'n_estimators': 50,
+    #         'learning_rate': 1.0
+    #     },
+    #     {
+    #         'n_estimators': 1,
+    #         'learning_rate': 1.0
+    #     },
+    #     {
+    #         'n_estimators': 500,
+    #         'learning_rate': 1.0
+    #     },
+    #     {
+    #         'n_estimators': 50,
+    #         'learning_rate': 10.0
+    #     },
+    # ],
     #'NeuroNet':[
         # {
         #     'hidden_layer_sizes': (100,),
