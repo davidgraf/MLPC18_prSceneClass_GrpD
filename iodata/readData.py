@@ -53,8 +53,8 @@ def readFold(foldName, foldtype, samplerate):
 
         matrix_tmp = np.load(str(data_path)+'/'+str(file_path)).transpose().astype(str)
         # sample according samplerate
-        sampleIndexList = random.sample(range(0, 500), int(501 * samplerate))
-        feature_data[offset:(offset + int(501 * samplerate)), 0:60] = matrix_tmp[sampleIndexList, :]
+        sampleIndexList = random.sample(range(0, 500), int(501 * samplerate)) if samplerate < 1.0 else range(0, 500)
+        feature_data[offset:(offset + int(501 * samplerate)), 0:60] = matrix_tmp[sampleIndexList, :] if samplerate < 1.0 else matrix_tmp
         label_data[offset:(offset + int(501 * samplerate))] = [label] * (int(501 * samplerate))
         offset = offset + int(501 * samplerate)
 
