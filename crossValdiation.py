@@ -16,9 +16,9 @@ class Fold:
     features = np.array(None)
     labels = np.array(None)
 
-class FoldData:
-    labels_train = None
-    feature_matrix_train = None
+# class FoldData:
+#     labels_train = None
+#     feature_matrix_train = None
 
 #read the folds and store them for all iterations
 
@@ -36,9 +36,9 @@ eval_folds[2].features, eval_folds[2].labels = readFold("fold3", "evaluate", SAM
 eval_folds[3].features, eval_folds[3].labels = readFold("fold4", "evaluate", SAMPLERATE)
 
 settings = {
-    # 'NaiveBayes': [{
-    #
-    # }],
+    'NaiveBayes': [{
+
+    }],
     'RandomForest':[
         # {
         #    'n_estimators': 5,
@@ -66,18 +66,18 @@ settings = {
         # },
     ],
     'SVM': [
-       {
-           'kernel': 'rbf',
-       },
-       {
-           'kernel': 'linear',
-       },
-       {
-           'kernel': 'poly',
-       },
-       {
-           'kernel': 'sigmoid',
-       },
+       # {
+       #     'kernel': 'rbf',
+       # },
+       # {
+       #     'kernel': 'linear',
+       # },
+       # {
+       #     'kernel': 'poly',
+       # },
+       # {
+       #     'kernel': 'sigmoid',
+       # },
        # {
        #     'kernel': 'precomputed',
        # },
@@ -142,7 +142,7 @@ for classifier in settings.keys():
 
 
             t_features = featureScale(folds[i].features)
-            t_labels = folds[i].labels.ravel()
+            t_labels = folds[i].labels[:, 0].ravel()
 
             '''trainData[0].feature_matrix_train = featureScale(folds[i].features)
             trainData[0].labels_train= folds[i].labels.ravel()
@@ -159,7 +159,7 @@ for classifier in settings.keys():
             #1 evaluation fold
 
             e_features = eval_folds[i].features
-            e_labels = eval_folds[i].labels
+            e_labels = eval_folds[i].labels[:, 0]
 
             featureMatrixTest = featureScale(e_features)
             labelsTest = e_labels.ravel()

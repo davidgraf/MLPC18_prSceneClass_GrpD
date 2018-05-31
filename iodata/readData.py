@@ -26,10 +26,10 @@ def test(readFolds, cnt):
 
 #foldName= 'fold1' or 'fold2' or 'fold3' or 'fold4'
 #foldtype= 'train' or 'test' or 'evaluate'
-def readFold(foldName, foldtype, samplerate):
+def readFold(foldName, foldtype, samplerate, data_folder='/iodata/data/'):
 
-    data_path = os.getcwd() + '/iodata/data/mfcc_numpy'
-    fold_path = os.getcwd() + '/iodata/data/evaluation_setup'
+    data_path = os.getcwd() + data_folder + 'mfcc_numpy'
+    fold_path = os.getcwd() + data_folder + 'evaluation_setup'
 
     print("reading from: " + fold_path +'/' + foldName + '_' + foldtype + '.txt')
     if foldtype == 'test':
@@ -40,7 +40,7 @@ def readFold(foldName, foldtype, samplerate):
 
     rows = (len(meta_data) * int(501 * samplerate))
     feature_data = np.empty([rows, 60], dtype='float')
-    label_data = np.empty(rows, dtype='S100')
+    label_data = np.empty([rows, 2], dtype='S100')
 
     offset = 0
     for item in meta_data:          #for each label
@@ -55,12 +55,13 @@ def readFold(foldName, foldtype, samplerate):
         # sample according samplerate
         sampleIndexList = random.sample(range(0, 500), int(501 * samplerate)) if samplerate < 1.0 else range(0, 500)
         feature_data[offset:(offset + int(501 * samplerate)), 0:60] = matrix_tmp[sampleIndexList, :] if samplerate < 1.0 else matrix_tmp
-        label_data[offset:(offset + int(501 * samplerate))] = [label] * (int(501 * samplerate))
+        label_data[offset:(offset + int(501 * samplerate)), 0] = [label] * (int(501 * samplerate))
+        label_data[offset:(offset + int(501 * samplerate)), 1] = [file_ID] * (int(501 * samplerate))
         offset = offset + int(501 * samplerate)
 
     print("done reading")
 
     return feature_data, label_data
-
-#data = readFold('fold1', 'train', 0.01)
-#print(data)
+#
+# data = readFold('fold1', 'train', 0.01, data_folder='/data/')
+# print(data)

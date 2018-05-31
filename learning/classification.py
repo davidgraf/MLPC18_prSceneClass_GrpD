@@ -12,6 +12,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import cross_val_score
 from sklearn.neural_network import MLPClassifier
 import sklearn.metrics as scikitm
+import numpy as np
 
 
 def SVMclassifierTrain(featureMatrix, labelMatrix, setting={}):
@@ -135,3 +136,23 @@ def testModel(model, features, labels):
     #print "F1-Score (Testset): " + str(f1)
 
     return accuracy, None, None, None
+
+
+def testModel_per_file(model, features, labels, filenames):
+
+    print "------------------------- Test classifier -------------------------"
+    print "Test classifier on " + str(len(labels)) + " samples"
+    predictedTest = classifierPredict(features, model)
+
+    predicted_with_filenames = np.append(predictedTest, filenames, axis=1)
+
+    dict = {
+        'e_01': {
+            'actual': 'tram',
+            'predicted': 'beach'
+        }
+    }
+
+
+
+    return ''
