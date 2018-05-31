@@ -8,7 +8,7 @@ import time
 
 folds = []
 
-SAMPLERATE = 1
+SAMPLERATE = 0.1
 overallAccuracy = 0
 
 
@@ -36,49 +36,52 @@ eval_folds[2].features, eval_folds[2].labels = readFold("fold3", "evaluate", SAM
 eval_folds[3].features, eval_folds[3].labels = readFold("fold4", "evaluate", SAMPLERATE)
 
 settings = {
+    # 'NaiveBayes': [{
+    #
+    # }],
     'RandomForest':[
-    #    {
-    #        'n_estimators': 5,
-    #        'criterion': 'entropy'
-    #    }
-    #   {
-    #        'n_estimators': 1,
-    #        'criterion': 'entropy'
-    #    },
-    #    {
-    #        'n_estimators': 5,
-    #        'criterion': 'entropy'
-    #    },
-    #    {
-    #        'n_estimators': 20,
-    #        'criterion': 'entropy'
-    #    },
-       {
-           'n_estimators': 20,
-           'criterion': 'gini'
-       },
-    #    {
-    #        'n_estimators': 30,
-    #        'criterion': 'gini'
-    #    },
+        # {
+        #    'n_estimators': 5,
+        #    'criterion': 'entropy'
+        # },
+        # {
+        #    'n_estimators': 1,
+        #    'criterion': 'entropy'
+        # },
+        # {
+        #    'n_estimators': 5,
+        #    'criterion': 'entropy'
+        # },
+        # {
+        #    'n_estimators': 20,
+        #    'criterion': 'entropy'
+        # },
+        # {
+        #    'n_estimators': 20,
+        #    'criterion': 'gini'
+        # },
+        # {
+        #    'n_estimators': 30,
+        #    'criterion': 'gini'
+        # },
     ],
-    #'SVM': [
-    #    {
-    #        'kernel': 'rbf',
-    #    },
-    #    {
-    #        'kernel': 'linear',
-    #    },
-    #    {
-    #        'kernel': 'poly',
-    #    },
-    #    {
-    #        'kernel': 'sigmoid',
-    #    },
-    #    {
-    #        'kernel': 'precomputed',
-    #    },
-    #],
+    'SVM': [
+       {
+           'kernel': 'rbf',
+       },
+       {
+           'kernel': 'linear',
+       },
+       {
+           'kernel': 'poly',
+       },
+       {
+           'kernel': 'sigmoid',
+       },
+       # {
+       #     'kernel': 'precomputed',
+       # },
+    ],
     #'AdaBoost':[
     #    {
     #        'n_estimators': 50,
@@ -98,26 +101,26 @@ settings = {
     #        },
     #]
     'NeuroNet':[
-        #{
+        # {
         #    'hidden_layer_sizes': (100,),
         #    'solver': 'adam',
         #    'learning_rate_init': 0.001
-        #}
-        #     {
-        #         'hidden_layer_sizes': (1,),
-        #         'solver': 'adam',
-        #         'learning_rate_init': 0.001
-        #     },
-        {
-            'hidden_layer_sizes': (10,),
-            'solver': 'adam',
-            'learning_rate_init': 0.01
-        }
-        #     {
-        #         'hidden_layer_sizes': (1000,),
-        #         'solver': 'adam',
-        #         'learning_rate_init': 0.001
-        #     },
+        # },
+        # {
+        #     'hidden_layer_sizes': (1,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.001
+        # },
+        # {
+        #     'hidden_layer_sizes': (100,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.0001
+        # },
+        # {
+        #     'hidden_layer_sizes': (1000,),
+        #     'solver': 'adam',
+        #     'learning_rate_init': 0.001
+        # },
     ]
 
 }
