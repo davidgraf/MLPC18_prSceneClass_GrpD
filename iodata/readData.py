@@ -40,7 +40,8 @@ def readFold(foldName, foldtype, samplerate, data_folder='/iodata/data/'):
 
     rows = (len(meta_data) * int(501 * samplerate))
     feature_data = np.empty([rows, 60], dtype='float')
-    label_data = np.empty([rows, 2], dtype='S100')
+    label_data = np.empty(rows, dtype='S100')
+    file_name = np.empty(rows, dtype='S100')
 
     offset = 0
     for item in meta_data:          #for each label
@@ -55,13 +56,13 @@ def readFold(foldName, foldtype, samplerate, data_folder='/iodata/data/'):
         # sample according samplerate
         sampleIndexList = random.sample(range(0, 500), int(501 * samplerate)) if samplerate < 1.0 else range(0, 500)
         feature_data[offset:(offset + int(501 * samplerate)), 0:60] = matrix_tmp[sampleIndexList, :] if samplerate < 1.0 else matrix_tmp
-        label_data[offset:(offset + int(501 * samplerate)), 0] = [label] * (int(501 * samplerate))
-        label_data[offset:(offset + int(501 * samplerate)), 1] = [file_ID] * (int(501 * samplerate))
+        label_data[offset:(offset + int(501 * samplerate))] = [label] * (int(501 * samplerate))
+        file_name[offset:(offset + int(501 * samplerate))] = [file_ID] * (int(501 * samplerate))
         offset = offset + int(501 * samplerate)
 
     print("done reading")
 
-    return feature_data, label_data
+    return feature_data, label_data, file_name
 #
 # data = readFold('fold1', 'train', 0.01, data_folder='/data/')
 # print(data)

@@ -138,21 +138,29 @@ def testModel(model, features, labels):
     return accuracy, None, None, None
 
 
-def testModel_per_file(model, features, labels, filenames):
+def testModel_per_file(model, features, labels, file_names):
 
     print "------------------------- Test classifier -------------------------"
     print "Test classifier on " + str(len(labels)) + " samples"
     predictedTest = classifierPredict(features, model)
 
-    predicted_with_filenames = np.append(predictedTest, filenames, axis=1)
+    eval_dict = get_eval_dict(file_names, labels, predictedTest)
 
-    dict = {
-        'e_01': {
-            'actual': 'tram',
-            'predicted': 'beach'
-        }
-    }
-
-
+    # if 'a025_110_120' in eval_dict:
+    #     print(eval_dict['a025_110_120'])
 
     return ''
+
+
+def get_eval_dict(file_names, labels, predictedTest):
+    eval_dict = {}
+    for filename in list(np.unique(file_names)):
+        if filename not in eval_dict:
+            eval_dict[filename] = {}
+            eval_dict[filename]['predicted'] = []
+            eval_dict[filename]['actual'] = []
+
+        eval_dict[filename]['predicted'] = [predictedTest[idx] for idx in range(0, len(predictedTest)) if
+                                            file_names[idx] == filename]
+        eval_dict[filename]['actual'] = np.unique([labels[idx] for idx in range(0, len(labels)) if file_names[idx] == filename])
+    return eval_dict
