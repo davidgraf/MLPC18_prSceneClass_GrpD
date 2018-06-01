@@ -4,6 +4,7 @@ from learning.classification import trainModel, testModel, testModel_per_file
 from processing.featureEvaluation import featureClassCoerr
 from processing.featureScaling import featureScale
 import time
+import operator
 
 
 folds = []
@@ -175,9 +176,52 @@ for classifier in settings.keys():
             accuracy, precision, recall, f1 = testModel(model, featureMatrixTest[0], labelsTest)
             overallAccuracy += accuracy
 
+            # apply 10 sec. prediction strategy
+            evaldict = testModel_per_file(model, featureMatrixTest[0], labelsTest, fileNamesTest)
 
-            testModel_per_file(model, featureMatrixTest[0], labelsTest, fileNamesTest)
+            # presetting
+            classes = {'beach':0, 'bus':0, 'cafe/restaurant':0, 'car':0, 'city_center':0, 'forest_path':0, 'grocery_store':0, 'home':0, 'library':0, 'metro_station':0, 'office':0, 'park':0, 'residential_area':0, 'train':0, 'tram':0}
+            longestinterval = 0
+            currentinterval = 0
+            intervalclass = ''
+            previous = ''
+            acctrue_FR = 0
+            accfalse_FR = 0
+            acctrue_IN = 0
+            accfalse_IN = 0
 
+            # loop over files/scenes
+            for file, scene in evaldict.iteritems():
+                for p in scene['predicted']:
+                    # strategie frequency
+                    classes[p] += 1
+
+                    # strategie interval
+                    if (p == previous):
+                        currentinterval += 1
+                    else:
+                        if (longestinterval < currentinterval):
+                            intervalclass = p
+                            currentinterval = 0
+                    previous = p
+
+                #strategie frequency
+                frequclass = max(classes.iteritems(), key=operator.itemgetter(1))[0]
+                if (frequclass == scene['actual'][0]):
+                    acctrue_FR += 1
+                else:
+                    accfalse_FR += 1
+                #reset classes count
+                classes = dict.fromkeys(classes, 0)
+
+                # strategie interval
+                if (intervalclass == scene['actual'][0]):
+                    acctrue_IN += 1
+                else:
+                    accfalse_IN += 1
+
+            print "Scene accuracy FREQUENCY: #true: " + str(acctrue_FR) + ' #false: ' + str(accfalse_FR) + ' acc: ' + str(acctrue_FR/float(acctrue_FR+accfalse_FR))
+            print "Scene accuracy INTERVAL: #true: " + str(acctrue_IN) + ' #false: ' + str(accfalse_IN) + ' acc: ' + str(acctrue_IN / float(acctrue_IN + accfalse_IN))
 
         print(overallAccuracy/4)
 

@@ -149,7 +149,7 @@ def testModel_per_file(model, features, labels, file_names):
     # if 'a025_110_120' in eval_dict:
     #     print(eval_dict['a025_110_120'])
 
-    return ''
+    return eval_dict
 
 
 def get_eval_dict(file_names, labels, predictedTest):
