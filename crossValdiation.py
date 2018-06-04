@@ -1,4 +1,5 @@
 from iodata.readData import readFold
+from iodata.writeData import writeToCSV
 import numpy as np
 from learning.classification import trainModel, testModel, testModel_per_file
 from processing.featureEvaluation import featureClassCoerr
@@ -9,7 +10,7 @@ import operator
 
 folds = []
 
-SAMPLERATE = 0.1
+SAMPLERATE = 0.01
 overallAccuracy = 0
 
 
@@ -261,6 +262,7 @@ for classifier in settings.keys():
 
 predicted = {}
 
+toCSV = []
 '''For each classifier -> setting -> file: count the prediction'''
 
 for c in classifier_results:
@@ -268,12 +270,15 @@ for c in classifier_results:
         if r not in predicted:
             predicted[r] = {}
             for p in c.results[r]:
+                toCSV.append([r, p])
                 if p not in predicted[r]:
                     predicted[r][p] = 1
                 else:
                     predicted[r][p] += 1
+
         else:
             for p in c.results[r]:
+                toCSV.append([r, p])
                 if p not in predicted[r]:
                     predicted[r][p] = 1
                 else:
@@ -291,5 +296,6 @@ for p in predicted:
         ensemble_f += 1
 
 
+writeToCSV(toCSV,'test.csv')
 
 print("Ensemble accurracy: #true: " + str(ensemble_t) + ' #false: ' + str(ensemble_f) + ' acc: ' + str(ensemble_t/float(ensemble_t+ensemble_f)))
