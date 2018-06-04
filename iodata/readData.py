@@ -66,5 +66,5 @@ def readFold(foldName, foldtype, samplerate, data_folder='/iodata/data/'):
 
     return feature_data, label_data, file_name
 
-data, label, files = readFold('fold1', 'test', 0.01, data_folder='/data/')
-print(data)
+# data, label, files = readFold('fold1', 'test', 0.01, data_folder='/data/')
+# print(data, files)
