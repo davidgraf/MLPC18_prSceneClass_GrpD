@@ -18,6 +18,13 @@ class Fold:
     labels = np.array(None)
     file_names = np.array(None)
 
+
+class ClassifierResults:
+    def __init__(self, classifier, setting):
+        self.classifier = classifier
+        self.setting = setting
+        self.results = {}
+
 # class FoldData:
 #     labels_train = None
 #     feature_matrix_train = None
@@ -38,18 +45,18 @@ eval_folds[2].features, eval_folds[2].labels, eval_folds[2].file_names = readFol
 eval_folds[3].features, eval_folds[3].labels, eval_folds[3].file_names = readFold("fold4", "evaluate", SAMPLERATE)
 
 settings = {
-    'NaiveBayes': [{
+    #'NaiveBayes': [{
 
-    }],
+    #}],
     'RandomForest':[
-        # {
-        #    'n_estimators': 5,
-        #    'criterion': 'entropy'
-        # },
-        # {
-        #    'n_estimators': 1,
-        #    'criterion': 'entropy'
-        # },
+         {
+            'n_estimators': 5,
+            'criterion': 'entropy'
+         },
+         {
+            'n_estimators': 1,
+            'criterion': 'entropy'
+         },
         # {
         #    'n_estimators': 5,
         #    'criterion': 'entropy'
@@ -84,9 +91,9 @@ settings = {
        #     'kernel': 'precomputed',
        # },
     ],
-    #'AdaBoost':[
+    'AdaBoost':[
     #    {
-    #        'n_estimators': 50,
+    #        'n_estimators': 1,
     #        'learning_rate': 1.0
     #    }
     #        {
@@ -99,9 +106,9 @@ settings = {
     #        },
     #        {
     #            'n_estimators': 50,
-    #            'learning_rate': 10.0
+    #            'learning_rate': 1.0
     #        },
-    #]
+    ],
     'NeuroNet':[
         # {
         #    'hidden_layer_sizes': (100,),
@@ -126,9 +133,19 @@ settings = {
     ]
 
 }
+#preset ensemble
+#ensemble = {}
+
+classifier_results = []
+
+actual = {}
 for classifier in settings.keys():
+    #ensemble[classifier] = {}
     print('************************************' + classifier + '************************************')
     for setting in settings[classifier]:
+        #ensemble[classifier][setting] = {}
+        classifier_cur_res = ClassifierResults(classifier, setting)
+
         print('********NewSetting********')
         print('Settings: ' + str(setting))
         overallAccuracy = 0
@@ -178,6 +195,18 @@ for classifier in settings.keys():
 
             # apply 10 sec. prediction strategy
             evaldict = testModel_per_file(model, featureMatrixTest[0], labelsTest, fileNamesTest)
+            #ensemble[classifier][setting][fileNamesTest] = evaldict
+            #ensemble[classifier][setting] = evaldict
+
+
+
+            for file in evaldict:
+                actual[file] = evaldict[file]['actual']
+                #ensemble[classifier][setting][file] = evaldict[file]['predicted']
+                classifier_cur_res.results[file] = evaldict[file]['predicted']
+
+                '''STORE THE CURRENT RESULT'''
+
 
             # presetting
             classes = {'beach':0, 'bus':0, 'cafe/restaurant':0, 'car':0, 'city_center':0, 'forest_path':0, 'grocery_store':0, 'home':0, 'library':0, 'metro_station':0, 'office':0, 'park':0, 'residential_area':0, 'train':0, 'tram':0}
@@ -191,7 +220,7 @@ for classifier in settings.keys():
             accfalse_IN = 0
 
             # loop over files/scenes
-            for file, scene in evaldict.iteritems():
+            '''for file, scene in evaldict.iteritems():
                 for p in scene['predicted']:
                     # strategie frequency
                     classes[p] += 1
@@ -220,9 +249,47 @@ for classifier in settings.keys():
                 else:
                     accfalse_IN += 1
 
-            print "Scene accuracy FREQUENCY: #true: " + str(acctrue_FR) + ' #false: ' + str(accfalse_FR) + ' acc: ' + str(acctrue_FR/float(acctrue_FR+accfalse_FR))
-            print "Scene accuracy INTERVAL: #true: " + str(acctrue_IN) + ' #false: ' + str(accfalse_IN) + ' acc: ' + str(acctrue_IN / float(acctrue_IN + accfalse_IN))
+            print("Scene accuracy FREQUENCY: #true: " + str(acctrue_FR) + ' #false: ' + str(accfalse_FR) + ' acc: ' + str(acctrue_FR/float(acctrue_FR+accfalse_FR)))
+            print("Scene accuracy INTERVAL: #true: " + str(acctrue_IN) + ' #false: ' + str(accfalse_IN) + ' acc: ' + str(acctrue_IN / float(acctrue_IN + accfalse_IN)))'''
+
+        classifier_results.append(classifier_cur_res)
 
         print(overallAccuracy/4)
 
         print("Train/Prediction Time (sec.)",(time.time()-timeStart))
+
+
+predicted = {}
+
+'''For each classifier -> setting -> file: count the prediction'''
+
+for c in classifier_results:
+    for r in c.results:
+        if r not in predicted:
+            predicted[r] = {}
+            for p in c.results[r]:
+                if p not in predicted[r]:
+                    predicted[r][p] = 1
+                else:
+                    predicted[r][p] += 1
+        else:
+            for p in c.results[r]:
+                if p not in predicted[r]:
+                    predicted[r][p] = 1
+                else:
+                    predicted[r][p] += 1
+
+ensemble_t = 0
+ensemble_f = 0
+
+'''Order the predictions by count and select the highest one, then compare it to the actual label for this file'''
+for p in predicted:
+    #print(sorted(predicted[p], key=predicted[p].get, reverse=True))
+    if list(sorted(predicted[p],key=predicted[p].get, reverse=True))[0] == actual[p]:
+        ensemble_t += 1
+    else:
+        ensemble_f += 1
+
+
+
+print("Ensemble accurracy: #true: " + str(ensemble_t) + ' #false: ' + str(ensemble_f) + ' acc: ' + str(ensemble_t/float(ensemble_t+ensemble_f)))
