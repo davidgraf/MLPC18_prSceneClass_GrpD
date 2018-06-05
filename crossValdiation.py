@@ -53,11 +53,11 @@ settings = {
          {
             'n_estimators': 5,
             'criterion': 'entropy'
-         },
-         {
-            'n_estimators': 1,
-            'criterion': 'entropy'
-         },
+         }
+         #{
+         #   'n_estimators': 1,
+         #   'criterion': 'entropy'
+         #},
         # {
         #    'n_estimators': 5,
         #    'criterion': 'entropy'
@@ -270,7 +270,6 @@ for c in classifier_results:
         if r not in predicted:
             predicted[r] = {}
             for p in c.results[r]:
-                toCSV.append([r, p])
                 if p not in predicted[r]:
                     predicted[r][p] = 1
                 else:
@@ -278,7 +277,6 @@ for c in classifier_results:
 
         else:
             for p in c.results[r]:
-                toCSV.append([r, p])
                 if p not in predicted[r]:
                     predicted[r][p] = 1
                 else:
@@ -290,6 +288,7 @@ ensemble_f = 0
 '''Order the predictions by count and select the highest one, then compare it to the actual label for this file'''
 for p in predicted:
     #print(sorted(predicted[p], key=predicted[p].get, reverse=True))
+    toCSV.append([p, list(sorted(predicted[p],key=predicted[p].get, reverse=True))[0]])
     if list(sorted(predicted[p],key=predicted[p].get, reverse=True))[0] == actual[p]:
         ensemble_t += 1
     else:
