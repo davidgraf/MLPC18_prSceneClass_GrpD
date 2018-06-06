@@ -1,7 +1,7 @@
 from iodata.readData import readFold
 from iodata.writeData import writeToCSV
 import numpy as np
-from learning.classification import trainModel, testModel, testModel_per_file
+from learning.classification import trainModel, testModel, predict_per_file
 from processing.featureEvaluation import featureClassCoerr
 from processing.featureScaling import featureScale
 import time
@@ -10,7 +10,7 @@ import operator
 
 folds = []
 
-SAMPLERATE = 0.01
+SAMPLERATE = 0.1
 overallAccuracy = 0
 
 
@@ -50,10 +50,10 @@ settings = {
 
     #}],
     'RandomForest':[
-         {
-            'n_estimators': 5,
-            'criterion': 'entropy'
-         }
+         # {
+         #    'n_estimators': 5,
+         #    'criterion': 'entropy'
+         # },
          #{
          #   'n_estimators': 1,
          #   'criterion': 'entropy'
@@ -70,15 +70,15 @@ settings = {
         #    'n_estimators': 20,
         #    'criterion': 'gini'
         # },
-        # {
-        #    'n_estimators': 30,
-        #    'criterion': 'gini'
-        # },
+        {
+           'n_estimators': 100,
+           'criterion': 'gini'
+        },
     ],
     'SVM': [
-       # {
-       #     'kernel': 'rbf',
-       # },
+       {
+           'kernel': 'rbf',
+       },
        # {
        #     'kernel': 'linear',
        # },
@@ -121,11 +121,11 @@ settings = {
         #     'solver': 'adam',
         #     'learning_rate_init': 0.001
         # },
-        # {
-        #     'hidden_layer_sizes': (100,),
-        #     'solver': 'adam',
-        #     'learning_rate_init': 0.0001
-        # },
+        {
+            'hidden_layer_sizes': (100,),
+            'solver': 'adam',
+            'learning_rate_init': 0.0001
+        },
         # {
         #     'hidden_layer_sizes': (1000,),
         #     'solver': 'adam',
@@ -195,7 +195,7 @@ for classifier in settings.keys():
             overallAccuracy += accuracy
 
             # apply 10 sec. prediction strategy
-            evaldict = testModel_per_file(model, featureMatrixTest[0], labelsTest, fileNamesTest)
+            evaldict = predict_per_file(model, featureMatrixTest[0], labelsTest, fileNamesTest)
             #ensemble[classifier][setting][fileNamesTest] = evaldict
             #ensemble[classifier][setting] = evaldict
 
@@ -221,7 +221,7 @@ for classifier in settings.keys():
             accfalse_IN = 0
 
             # loop over files/scenes
-            '''for file, scene in evaldict.iteritems():
+            for file, scene in evaldict.iteritems():
                 for p in scene['predicted']:
                     # strategie frequency
                     classes[p] += 1
@@ -251,7 +251,7 @@ for classifier in settings.keys():
                     accfalse_IN += 1
 
             print("Scene accuracy FREQUENCY: #true: " + str(acctrue_FR) + ' #false: ' + str(accfalse_FR) + ' acc: ' + str(acctrue_FR/float(acctrue_FR+accfalse_FR)))
-            print("Scene accuracy INTERVAL: #true: " + str(acctrue_IN) + ' #false: ' + str(accfalse_IN) + ' acc: ' + str(acctrue_IN / float(acctrue_IN + accfalse_IN)))'''
+            print("Scene accuracy INTERVAL: #true: " + str(acctrue_IN) + ' #false: ' + str(accfalse_IN) + ' acc: ' + str(acctrue_IN / float(acctrue_IN + accfalse_IN)))
 
         classifier_results.append(classifier_cur_res)
 

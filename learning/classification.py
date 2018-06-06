@@ -121,6 +121,7 @@ def trainModel(features, labels, classifier, setting={}):
 
     return model, meanScore
 
+
 def testModel(model, features, labels):
     # apply classifier on different dataset
     print "------------------------- Test classifier -------------------------"
@@ -138,10 +139,10 @@ def testModel(model, features, labels):
     return accuracy, None, None, None
 
 
-def testModel_per_file(model, features, labels, file_names):
+def predict_per_file(model, features, labels, file_names):
 
     print "------------------------- Test classifier -------------------------"
-    print "Test classifier on " + str(len(labels)) + " samples"
+    print "Test classifier on " + str(len(labels) if not (labels is None) else len(file_names)) + " samples"
     predictedTest = classifierPredict(features, model)
 
     eval_dict = get_eval_dict(file_names, labels, predictedTest)
@@ -162,5 +163,6 @@ def get_eval_dict(file_names, labels, predictedTest):
 
         eval_dict[filename]['predicted'] = [predictedTest[idx] for idx in range(0, len(predictedTest)) if
                                             file_names[idx] == filename]
-        eval_dict[filename]['actual'] = np.unique([labels[idx] for idx in range(0, len(labels)) if file_names[idx] == filename])
+        if not (labels is None):
+            eval_dict[filename]['actual'] = np.unique([labels[idx] for idx in range(0, len(labels)) if file_names[idx] == filename])
     return eval_dict

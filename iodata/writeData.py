@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import glob
 
-DATA_DIR = "D:/Zwischenablage/dcase2017_evaluation_set/"
+DATA_DIR = ""
 
 def writeToCSV (matrix, filename):
 
