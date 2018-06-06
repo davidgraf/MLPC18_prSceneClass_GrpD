@@ -31,18 +31,18 @@ settings = {
            'criterion': 'gini'
         },
     ],
-    # 'SVM': [
-    #    {
-    #        'kernel': 'rbf',
-    #    },
-    # ],
-    # 'NeuroNet':[
-    #     {
-    #         'hidden_layer_sizes': (100,),
-    #         'solver': 'adam',
-    #         'learning_rate_init': 0.0001
-    #     },
-    # ]
+    'SVM': [
+       {
+           'kernel': 'rbf',
+       },
+    ],
+    'NeuroNet':[
+        {
+            'hidden_layer_sizes': (100,),
+            'solver': 'adam',
+            'learning_rate_init': 0.0001
+        },
+    ]
 }
 
 train = Fold()
@@ -121,5 +121,5 @@ for p in predicted:
 
 
 writeToCSV(toCSV,'prediction.csv')
-
+print('Predicting Done!')
 #print("Ensemble accurracy: #true: " + str(ensemble_t) + ' #false: ' + str(ensemble_f) + ' acc: ' + str(ensemble_t/float(ensemble_t+ensemble_f)))
